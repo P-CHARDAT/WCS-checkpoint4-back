@@ -16,13 +16,13 @@ const {
 
 adminRouter.get("/", getAdmins);
 adminRouter.get("/:id", getAdmins);
-adminRouter.post("/", createOneAdmin, getAdmins);
+adminRouter.post("/", authTokenFromCookie, createOneAdmin, getAdmins);
 adminRouter.post("/contact", ContactEmail);
-adminRouter.put("/:id", updateOneAdmin, getAdmins);
-adminRouter.delete("/:id", deleteOneAdmin);
+adminRouter.put("/:id", authTokenFromCookie, updateOneAdmin, getAdmins);
+adminRouter.delete("/:id", authTokenFromCookie, deleteOneAdmin);
 
 adminRouter.post("/login", verifyCredentials, createToken);
 
-adminRouter.post("/refresh", refreshToken);
+adminRouter.post("/refresh", authTokenFromCookie, refreshToken);
 
 module.exports = adminRouter;
