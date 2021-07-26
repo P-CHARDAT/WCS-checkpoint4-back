@@ -37,7 +37,8 @@ const getProjects = async (req, res) => {
 };
 
 const createOneProject = async (req, res, next) => {
-  const { link, title, description, type, technos, date, img_src } = req.body;
+  const { link, title, description, type, technos, date, img_src } = req.image;
+  console.log(req.image, "image de create pro ici ");
 
   let validationData = null;
   validationData = Joi.object({
@@ -49,7 +50,7 @@ const createOneProject = async (req, res, next) => {
     date: Joi.string(),
     img_src: Joi.string(),
   }).validate(
-    { link, title, description, type, technos, date, img_src },
+    { link, title, description, type, technos, date },
     { abortEarly: false }
   ).error;
   if (validationData) {
@@ -64,9 +65,16 @@ const createOneProject = async (req, res, next) => {
       date,
       img_src,
     };
+    console.log(project, "log de project ici !");
     const [data, error] = await awesomeDataHandler(createOne(project));
     if (data) {
-      req.projetId = [data].insertId;
+      console.log(data.inserId, "data fin de create projet");
+      console.log(
+        [data.ResultSetHeader],
+        " tableau de data fin de create projet"
+      );
+
+      req.projetId = data.insertId;
       return next(req.projetId);
     }
     return res.status(500).send(error);
@@ -120,6 +128,7 @@ const deleteOneProject = async (req, res) => {
 
 // Middleware pour multer
 const addImg = (req, res, next) => {
+  console.log(req);
   const storage = multer.diskStorage({
     destination: (req, file, cb) => {
       cb(null, "public/assets");
@@ -137,10 +146,12 @@ const addImg = (req, res, next) => {
       console.log(req.body.configuration, "config multer");
       const configuration = JSON.parse(req.body.configuration);
       req.image = {
+        ...configuration,
         img_src: req.file.filename,
-        alt: configuration.alt,
+        // alt: configuration.alt,
         // dimension: configuration.dimension,
       };
+      console.log(req.image, "req image de addImg");
       return next();
     }
   });

@@ -10,8 +10,8 @@ const {
 
 projetsRouter.get("/", getProjects);
 projetsRouter.get("/:id", getProjects);
-// projetsRouter.post("/", addImg, createOneProject, getProjects);
-projetsRouter.post("/", createOneProject, getProjects);
+projetsRouter.post("/", addImg, createOneProject, getProjects);
+// projetsRouter.post("/", createOneProject, getProjects);
 projetsRouter.put("/:id", updateOneProject, getProjects);
 projetsRouter.delete("/:id", deleteOneProject);
 
